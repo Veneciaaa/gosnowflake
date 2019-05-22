@@ -221,7 +221,7 @@ func authenticate(
 		requestMain.Authenticator = authenticatorOAuth
 		requestMain.Token = sc.cfg.Token
 	case authenticatorOkta:
-		requestMain.RawSAMLResponse = string(samlResponse)
+		
 	case authenticatorJWT:
 		requestMain.Authenticator = authenticatorJWT
 
@@ -234,15 +234,19 @@ func authenticate(
 	case authenticatorSnowflake:
 		fallthrough
 	default:
-		glog.V(2).Info("Username and password")
-		requestMain.LoginName = sc.cfg.User
-		requestMain.Password = sc.cfg.Password
-		switch {
-		case sc.cfg.PasscodeInPassword:
-			requestMain.ExtAuthnDuoMethod = "passcode"
-		case sc.cfg.Passcode != "":
-			requestMain.Passcode = sc.cfg.Passcode
-			requestMain.ExtAuthnDuoMethod = "passcode"
+		if strings.Contains(authenticator, authenticatorOkta) {
+			requestMain.RawSAMLResponse = string(samlResponse)
+		} else {
+			glog.V(2).Info("Username and password")
+			requestMain.LoginName = sc.cfg.User
+			requestMain.Password = sc.cfg.Password
+			switch {
+			case sc.cfg.PasscodeInPassword:
+				requestMain.ExtAuthnDuoMethod = "passcode"
+			case sc.cfg.Passcode != "":
+				requestMain.Passcode = sc.cfg.Passcode
+				requestMain.ExtAuthnDuoMethod = "passcode"
+			}
 		}
 	}
 
