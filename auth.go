@@ -220,8 +220,6 @@ func authenticate(
 		requestMain.LoginName = sc.cfg.User
 		requestMain.Authenticator = authenticatorOAuth
 		requestMain.Token = sc.cfg.Token
-	case authenticatorOkta:
-		
 	case authenticatorJWT:
 		requestMain.Authenticator = authenticatorJWT
 
