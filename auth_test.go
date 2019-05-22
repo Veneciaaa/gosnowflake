@@ -309,7 +309,7 @@ func TestUnitAuthenticateSaml(t *testing.T) {
 		FuncPostAuth: postAuthCheckSAMLResponse,
 	}
 	sc := getDefaultSnowflakeConn()
-	sc.cfg.Authenticator = authenticatorOkta
+	sc.cfg.Authenticator = "https://test.okta.com"
 	sc.rest = sr
 	_, err = authenticate(sc, []byte("HTML data in bytes from"), []byte{})
 	if err != nil {
